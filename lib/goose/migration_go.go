@@ -108,6 +108,8 @@ import (
 	"bitbucket.org/liamstask/goose/lib/goose"
 )
 
+var Conf goose.DBConf
+
 func main() {
 
 	var conf goose.DBConf
@@ -115,7 +117,13 @@ func main() {
 	if err := gob.NewDecoder(buf).Decode(&conf); err != nil {
 		log.Fatal("gob.Decode - ", err)
 	}
-
+	Conf = goose.DBConf{
+		MigrationsDir:  conf.MigrationsDir,
+		Env: conf.Env,
+		Driver: conf.Driver,
+		PgSchema: conf.PgSchema,
+	}
+	
 	db, err := goose.OpenDBFromDBConf(&conf)
 	if err != nil {
 		log.Fatal("failed to open DB:", err)
