@@ -117,12 +117,12 @@ func main() {
 	if err := gob.NewDecoder(buf).Decode(&conf); err != nil {
 		log.Fatal("gob.Decode - ", err)
 	}
-	Conf = goose.DBConf{
-		MigrationsDir:  conf.MigrationsDir,
-		Env: conf.Env,
-		Driver: conf.Driver,
-		PgSchema: conf.PgSchema,
-	}
+	
+	// create a copy of conf
+	Conf = conf
+	// since the implementations of SqlDialect are pointers
+	// nil them, to ensure no operation on Conf has any effect on conf
+	Conf.Driver.Dialect = nil
 	
 	db, err := goose.OpenDBFromDBConf(&conf)
 	if err != nil {
