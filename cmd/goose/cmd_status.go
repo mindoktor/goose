@@ -1,12 +1,13 @@
 package main
 
 import (
-	"bitbucket.org/liamstask/goose/lib/goose"
 	"database/sql"
 	"fmt"
 	"log"
 	"path/filepath"
 	"time"
+
+	"bitbucket.org/evard/goose/lib/goose"
 )
 
 var statusCmd = &Command{

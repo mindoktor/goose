@@ -1,12 +1,13 @@
 package main
 
 import (
-	"bitbucket.org/liamstask/goose/lib/goose"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
+
+	"bitbucket.org/evard/goose/lib/goose"
 )
 
 var createCmd = &Command{
