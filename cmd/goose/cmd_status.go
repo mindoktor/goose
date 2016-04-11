@@ -53,13 +53,13 @@ func statusRun(cmd *Command, args ...string) {
 	fmt.Println("    Applied At                  Migration")
 	fmt.Println("    =======================================")
 	for _, m := range migrations {
-		printMigrationStatus(db, m.Version, filepath.Base(m.Source))
+		printMigrationStatus(db, m.Version, filepath.Base(m.Source), conf.TableName)
 	}
 }
 
-func printMigrationStatus(db *sql.DB, version int64, script string) {
+func printMigrationStatus(db *sql.DB, version int64, script, tableName string) {
 	var row goose.MigrationRecord
-	q := fmt.Sprintf("SELECT tstamp, is_applied FROM goose_db_version WHERE version_id=%d ORDER BY tstamp DESC LIMIT 1", version)
+	q := fmt.Sprintf("SELECT tstamp, is_applied FROM %s WHERE version_id=%d ORDER BY tstamp DESC LIMIT 1", tableName, version)
 	e := db.QueryRow(q).Scan(&row.TStamp, &row.IsApplied)
 
 	if e != nil && e != sql.ErrNoRows {

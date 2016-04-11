@@ -25,6 +25,7 @@ type DBConf struct {
 	Env           string
 	Driver        DBDriver
 	PgSchema      string
+	TableName     string
 }
 
 // extract configuration details from the given file
@@ -70,6 +71,12 @@ func NewDBConf(p, env string, pgschema string) (*DBConf, error) {
 		d.Dialect = dialectByName(dialect)
 	}
 
+	tableName := "goose_db_version"
+	// allow the configuration to override the TableName
+	if table, err := f.Get(fmt.Sprintf("%s.tablename", env)); err == nil {
+		tableName = table
+	}
+
 	if !d.IsValid() {
 		return nil, errors.New(fmt.Sprintf("Invalid DBConf: %v", d))
 	}
@@ -79,6 +86,7 @@ func NewDBConf(p, env string, pgschema string) (*DBConf, error) {
 		Env:           env,
 		Driver:        d,
 		PgSchema:      pgschema,
+		TableName:     tableName,
 	}, nil
 }
 
