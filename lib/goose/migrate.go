@@ -191,7 +191,7 @@ func NumericComponent(name string) (int64, error) {
 // Create and initialize the DB version table if it doesn't exist.
 func EnsureDBVersion(conf *DBConf, db *sql.DB) (int64, error) {
 
-	rows, err := conf.Driver.Dialect.dbVersionQuery(db)
+	rows, err := conf.Driver.Dialect.dbVersionQuery(db, conf.TableName)
 	if err != nil {
 		if err == ErrTableDoesNotExist {
 			return 0, createVersionTable(conf, db)
@@ -247,14 +247,14 @@ func createVersionTable(conf *DBConf, db *sql.DB) error {
 
 	d := conf.Driver.Dialect
 
-	if _, err := txn.Exec(d.createVersionTableSql()); err != nil {
+	if _, err := txn.Exec(d.createVersionTableSql(conf.TableName)); err != nil {
 		txn.Rollback()
 		return err
 	}
 
 	version := 0
 	applied := true
-	if _, err := txn.Exec(d.insertVersionSql(), version, applied); err != nil {
+	if _, err := txn.Exec(d.insertVersionSql(conf.TableName), version, applied); err != nil {
 		txn.Rollback()
 		return err
 	}
@@ -372,7 +372,7 @@ func CreateMigration(name, migrationType, dir string, t time.Time) (path string,
 func FinalizeMigration(conf *DBConf, txn *sql.Tx, direction bool, v int64) error {
 
 	// XXX: drop goose_db_version table on some minimum version number?
-	stmt := conf.Driver.Dialect.insertVersionSql()
+	stmt := conf.Driver.Dialect.insertVersionSql(conf.TableName)
 	if _, err := txn.Exec(stmt, v, direction); err != nil {
 		txn.Rollback()
 		return err
