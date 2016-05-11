@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"bitbucket.org/evard/goose/lib/goose"
+	"mindoktor.io/goose/lib/goose"
 )
 
 var upCmd = &Command{

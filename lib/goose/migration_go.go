@@ -103,7 +103,7 @@ import (
 	"encoding/gob"
 
 	_ "{{.Import}}"
-	"bitbucket.org/evard/goose/lib/goose"
+	"mindoktor.io/goose/lib/goose"
 )
 
 var Conf goose.DBConf

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"text/template"
 
-	"bitbucket.org/evard/goose/lib/goose"
+	"mindoktor.io/goose/lib/goose"
 )
 
 // global options. available to any subcommands.

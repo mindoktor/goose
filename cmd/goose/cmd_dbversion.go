@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"bitbucket.org/evard/goose/lib/goose"
+	"mindoktor.io/goose/lib/goose"
 )
 
 var dbVersionCmd = &Command{
