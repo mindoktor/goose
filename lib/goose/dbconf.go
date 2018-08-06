@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
 	"github.com/kylelemons/go-gypsy/yaml"
 	"github.com/lib/pq"
 )
